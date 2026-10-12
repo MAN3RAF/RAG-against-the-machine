@@ -8,25 +8,34 @@ class Chunker:
 
 
 
-    def mark_down_chunker(self, file_path: str) -> MinimalSource:
-        pass
+    def mark_down_chunker(self, path: str) -> List[MinimalSource]:
+        
+        with open(path, "r") as f:
+            pass
 
-    def text_chunker(self, file_path: str) -> MinimalSource:
-        pass
+    def text_chunker(self, path: str) -> List[MinimalSource]:
+        
+        with open(path, "r") as f:
+            pass
 
-    def python_chunker(self, file_path: str) -> MinimalSource:
-        pass
+    def python_chunker(self, path: str) -> List[MinimalSource]:
+        
+        with open(path, "r") as f:
+            pass
 
-    def chunk(self, paths: List[str]) -> MinimalSource:
+    def chunk(self, paths: List[str]) -> List[MinimalSource]:
 
-        for path in paths:
-            if path.suffix == ".py":
-                self.python_chunker(path)
-            elif path.suffix == ".md":
-                self.mark_down_chunker(path)
-            elif path.suffix == ".txt":
-                self.text_chunker(path)
+        try:
+            for path in paths:
+                if path.endswith(".py"):
+                    self.python_chunker(path)
+                elif path.endswith(".md"):
+                    self.mark_down_chunker(path)
+                elif path.endswith(".txt"):
+                    self.text_chunker(path)
 
+        except Exception as e: 
+            print(e)
 
 
 
