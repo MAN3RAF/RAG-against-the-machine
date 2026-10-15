@@ -13,7 +13,7 @@ class Parser:
         paths = []
 
         for p in Path(file_path).rglob("*"):
-            if p.is_file() and file.suffix in (".py", ".txt", ".md"):
+            if p.is_file() and p.suffix in (".py", ".txt", ".md"):
                 paths.append(os.path.relpath(p))
 
         # paths = [os.path.relpath(p) for p in Path(file_path).rglob("*") if p.is_file() and p.suffix in (".py", ".txt", ".md")]
