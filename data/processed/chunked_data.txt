@@ -1,0 +1,22 @@
+[
+    {
+        "file_path": "/home/lsebar/work/RAG-against-the-machine/README.md",
+        "first_character_index": 0,
+        "last_character_index": 49
+    },
+    {
+        "file_path": "src/parser.py",
+        "first_character_index": 0,
+        "last_character_index": 505
+    },
+    {
+        "file_path": "text.txt",
+        "first_character_index": 0,
+        "last_character_index": 1496
+    },
+    {
+        "file_path": "text.txt",
+        "first_character_index": 1498,
+        "last_character_index": 2215
+    }
+]

@@ -2,6 +2,8 @@ from models import MinimalSource
 from typing import List
 from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
 from langchain_core.documents import Document
+import json
+from pathlib import Path
 
 
 class Chunker:
@@ -35,9 +37,9 @@ class Chunker:
         return minimal_sources
 
 
-    def chunk(self, paths: List[str]) -> List[list[MinimalSource]]:
+    def chunk(self, paths: List[str]) -> None:
 
-        res = []
+        chunked_data = []
 
         for path in paths:
             try:
@@ -69,14 +71,18 @@ class Chunker:
 
                     chunks = splitter.create_documents([data])
 
-                    res.extend(self.make_minimal_source(path, chunks))
+                    chunked_data.extend(chunk.model_dump() for chunk in self.make_minimal_source(path, chunks))
 
-            except Exception as e: 
+                Path("data/processed").mkdir(exist_ok=True, parents=True)
+                with open("data/processed/chunked_data.txt", "w", encoding="utf-8") as f:
+                    json.dump(chunked_data, f, indent=4)
+
+            except Exception as e:
                 print(e)
+            
+            print(chunked_data)
         
-        print(res)
         
-        return res
 
 
 
