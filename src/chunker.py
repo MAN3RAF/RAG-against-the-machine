@@ -39,15 +39,15 @@ class Chunker:
 
         res = []
 
-        try:
-            for path in paths:
+        for path in paths:
+            try:
                 with open(path, "r", encoding="utf-8") as f:
                     data = f.read()
 
                     if path.endswith(".py"):
                         splitter = RecursiveCharacterTextSplitter.from_language(
                             language=Language.PYTHON,
-                            chunk_size=2000,
+                            chunk_size=self.max_chunk_size,
                             chunk_overlap=100, #Fixed: 5% of 2000 characters, 0.05*2000=100
                             add_start_index=True
                         )
@@ -62,18 +62,23 @@ class Chunker:
 
                     elif path.endswith(".txt"):
                         splitter = RecursiveCharacterTextSplitter(
-                            chunk_size=2000,
+                            chunk_size=self.max_chunk_size,
                             chunk_overlap=100, #Fixed: 5% of 2000 characters, 0.05*2000=100
                             add_start_index=True
                         )
 
                     chunks = splitter.create_documents([data])
 
-                    res.append(self.make_minimal_source(path, chunks))
+                    res.extend(self.make_minimal_source(path, chunks))
+
+            except Exception as e: 
+                print(e)
+        
+        print(res)
+        
+        return res
 
 
-        except Exception as e: 
-            print(e)
 
 
 

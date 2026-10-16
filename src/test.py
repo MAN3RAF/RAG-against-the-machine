@@ -6,7 +6,7 @@ from chunker import Chunker
 
 
 
-c = Chunker()
+c = Chunker(max_chunk_size=2000)
 
 c.chunk(["/home/lsebar/work/RAG-against-the-machine/README.md", "src/parser.py", "text.txt"])
 
