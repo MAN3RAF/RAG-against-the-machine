@@ -8,7 +8,7 @@ class Parser:
         pass
 
 
-    def get_all_paths(self, file_path: str) -> List[str]:
+    def get_all_paths(file_path: str) -> List[str]:
 
         paths = []
 
