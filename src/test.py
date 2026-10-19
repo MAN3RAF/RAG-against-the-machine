@@ -1,18 +1,21 @@
 # from .models import MinimalSource
-from typing import List
-from langchain_text_splitters import RecursiveCharacterTextSplitter, Language
-from chunker import Chunker
 from parser import Parser
+from chunker import Chunker
 
+repo_root = "/goinfre/lsebar/RAG-against-the-machine/vllm-0.10.1"
 
-p = Parser
-c = Chunker(max_chunk_size=2000)
+parser = Parser(repo_root)
+paths = parser.get_all_paths()
 
-paths = p.get_all_paths("/home/lsebar/work/RAG-against-the-machine/vllm-0.10.1")
-c.chunk(paths)
+print(f"Found {len(paths)} files")
 
+chunker = Chunker(max_chunk_size=2000)
+chunker.chunk(
+    paths=paths,
+    save_directory="data/processed"
+)
 
-
+# print(f"Indexed-ready chunks: {total}")
 
 
 

@@ -5,6 +5,7 @@ description = "rag project"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "bm25s>=0.3.14",
     "langchain-text-splitters>=1.1.3",
     "pydantic>=2.13.5",
     "tqdm>=4.70.1",

@@ -46,7 +46,7 @@ class Chunker:
         self,
         file_path: str,
         original_text: str,
-        chunks: list[Document],
+        chunks: List[Document],
     ) -> List[MinimalSource]:
         """Locate chunks in the original text and validate their ranges."""
 
@@ -95,8 +95,8 @@ class Chunker:
         return minimal_sources
 
     def chunk(
-        self, paths: list[str], save_directory: str = "data/processed"
-    ) -> None:
+        self, paths: List[str],
+        save_directory: str = "data/processed") -> None:
         """Persist chunk texts and validated locations as JSON."""
 
         output_path = Path(save_directory) / "chunked_data.json"
