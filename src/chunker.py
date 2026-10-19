@@ -148,7 +148,7 @@ class Chunker:
                                 {"text": doc.page_content,
                                  "source": source.model_dump()},
                                 output,
-                                ensure_ascii=False,
+                                ensure_ascii=False
                             )
                             total_chunks += 1
 
