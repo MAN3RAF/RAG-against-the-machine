@@ -8,9 +8,13 @@ import bm25s
 class Indexer:
     def __init__(
         self,
-        chunks_path: str = "data/processed/chunked_data.json"
+        chunks_path: str = "data/processed/chunked_data.json",
+        save_directory: str = "data/processed/"
     ):
         self.chunks_path = Path(chunks_path)
+        self.bm25 = bm25s.BM25()
+        
+        self.save_directory = save_directory
 
     def load_chunks(self) -> tuple[str, List]:
         with self.chunks_path.open("r", encoding="utf-8") as f:
@@ -30,6 +34,12 @@ class Indexer:
 
     def index(self):
         
-        pass
+        corpus, sources = self.load_chunks()
+
+        corpus_tokens = bm25s.tokenize(corpus)
+
+        self.bm25.index(corpus_tokens)
+
+        self.bm25.save(self.save_directory)
 
 

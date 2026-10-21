@@ -23,17 +23,10 @@ chunker.chunk(
 indexer = Indexer(f"{save_directory}/chunked_data.json")
 # print(indexer.load_chunks())
 
-indexer = Indexer(f"{save_directory}/chunked_data.json")
+# indexer = Indexer(f"{save_directory}/chunked_data.json")
 
-corpus, sources = indexer.load_chunks()
+indexer.index()
 
-corpus_tokens = bm25s.tokenize(corpus)
-
-bm25 = bm25s.BM25()
-
-bm25.index(corpus_tokens)
-
-bm25.save(save_directory)
 
 # print(corpus_tokens)
 
