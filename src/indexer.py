@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from typing import List
 from models import MinimalSource
+import bm25s
 
 
 class Indexer:
@@ -28,6 +29,7 @@ class Indexer:
         return corpus, sources
 
     def index(self):
+        
         pass
 
 
