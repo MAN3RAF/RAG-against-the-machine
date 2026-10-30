@@ -19,17 +19,17 @@ class RagBm25:
         self.bm25 = bm25s.BM25()
         self._loaded = False
 
-    def load_chunks(self) -> tuple[list[str], list[MinimalSource]]:
+    def load_chunks(self) -> tuple[List[str], List[MinimalSource]]:
         """Load and validate chunks and their source metadata."""
 
         with self.chunks_path.open("r", encoding="utf-8") as f:
             records = json.load(f)
 
-        if not isinstance(records, list) or not records:
-            raise ValueError("Chunk data must be a non-empty JSON list.")
+        if not isinstance(records, List) or not records:
+            raise ValueError("Chunk data must be a non-empty JSON List.")
 
-        corpus: list[str] = []
-        sources: list[MinimalSource] = []
+        corpus: List[str] = []
+        sources: List[MinimalSource] = []
 
         for i, record in enumerate(records):
             if not isinstance(record, dict):
@@ -192,4 +192,66 @@ class RagBm25:
             hit["source"]
             for hit in self.retrieve_hits(user_question, k)
         ]
+
+
+    def search_dataset(
+        self,
+        dataset_path: str,
+        save_directory: str = "data/output/search_results",
+        k: int = 5,
+    ) -> Path:
+        """Search every question and save the results for evaluation."""
+
+        if type(k) is not int or k < 1:
+            raise ValueError("k must be a positive integer")
+
+        dataset_file = Path(dataset_path)
+
+        with dataset_file.open("r", encoding="utf-8") as f:
+            dataset = json.load(f)
+
+        if not isinstance(dataset, dict):
+            raise ValueError("Dataset must be a JSON object.")
+
+        questions = dataset.get("rag_questions")
+
+        if not isinstance(questions, List):
+            raise ValueError("'rag_questions' must be a list.")
+
+        results = []
+
+        for item in questions:
+            question_id = item["question_id"]
+            question = item["question"]
+
+            sources = self.retrieve(question, k=k)
+
+            results.append({
+                "question_id": question_id,
+                "question": question,
+                "retrieved_sources": [
+                    {
+                        **source.model_dump(),
+                        "file_path": "data/raw/" + source.file_path,
+                    }
+                    for source in sources
+                ],
+            })
+
+        output_dir = Path(save_directory)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        output_file = output_dir / dataset_file.name
+
+        output_data = {
+            "search_results": results,
+            "k": k,
+        }
+
+        with output_file.open("w", encoding="utf-8") as f:
+            json.dump(output_data, f, indent=2, ensure_ascii=False)
+
+        return output_file
+
+
 

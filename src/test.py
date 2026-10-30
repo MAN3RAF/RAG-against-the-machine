@@ -27,23 +27,34 @@ rag = RagBm25(f"{save_directory}/chunked_data.json")
 
 rag.index()
 
-# hits = rag.retrieve_hits("Who is Lachen Sebar?")
+# hits = rag.retrieve_hits("What is Cmake?")
 
 # for hit in hits:
 #     print(hit["score"])
 #     print(hit["text"])
 #     print(hit["source"].model_dump())
 
-results = rag.retrieve(
-    "Who is Lahcen Sebar?",
-    k=5,
-)
+# results = rag.retrieve(
+#     "Hwo to use Cmake?",
+#     k=5,
+# )
 
-for source in results:
-    print(source.model_dump())
+# for source in results:
+#     print(source.model_dump())
 
 # print(corpus_tokens)
 
 
+code_output = rag.search_dataset(
+    dataset_path="datasets_public/public/UnansweredQuestions/dataset_code_public.json",
+    k=5,
+)
 
+print("Code results:", code_output)
 
+# docs_output = rag.search_dataset(
+#     dataset_path="datasets_public/public/UnansweredQuestions/dataset_docs_public.json",
+#     k=5,
+# )
+
+# print("Documentation results:", docs_output)
