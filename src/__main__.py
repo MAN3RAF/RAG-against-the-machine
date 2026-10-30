@@ -1,9 +1,11 @@
 from src.parser import Parser
+from sys import argv
 
 
 def main():
 
-    pass
+    input = argv[1:]
+    print(input[0])
 
 
 

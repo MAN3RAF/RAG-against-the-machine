@@ -4,11 +4,14 @@ from chunker import Chunker
 from ragbm25 import RagBm25
 from ragbm25 import RagBm25
 import bm25s
+from sys import argv
 
 
 repo_root = "/home/lsebar/work/RAG-against-the-machine/vllm-0.10.1"
 
 parser = Parser(repo_root)
+key, input = parser.parse_input(argv[1:])
+
 paths = parser.get_all_paths()
 save_directory = "data/processed"
 
@@ -45,12 +48,12 @@ rag.index()
 # print(corpus_tokens)
 
 
-code_output = rag.search_dataset(
-    dataset_path="datasets_public/public/UnansweredQuestions/dataset_code_public.json",
-    k=5,
-)
+# code_output = rag.search_dataset(
+#     dataset_path="datasets_public/public/UnansweredQuestions/dataset_code_public.json",
+#     k=5,
+# )
 
-print("Code results:", code_output)
+# print("Code results:", code_output)
 
 # docs_output = rag.search_dataset(
 #     dataset_path="datasets_public/public/UnansweredQuestions/dataset_docs_public.json",

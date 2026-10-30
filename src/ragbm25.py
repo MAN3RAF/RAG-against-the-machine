@@ -11,7 +11,7 @@ class RagBm25:
     def __init__(
         self,
         chunks_path: str = "data/processed/chunked_data.json",
-        save_directory: str = "data/processed/bm25_index",
+        save_directory: str = "data/processed/bm25_index"
     ) -> None:
 
         self.chunks_path = Path(chunks_path)
@@ -67,7 +67,7 @@ class RagBm25:
 
         corpus_tokens = bm25s.tokenize(
             corpus,
-            stopwords=None,
+            stopwords=None
         )
 
         self.bm25 = bm25s.BM25()
@@ -77,7 +77,7 @@ class RagBm25:
         saved_corpus = [
             {
                 "text": text,
-                "source": source.model_dump(),
+                "source": source.model_dump()
             }
             for text, source in zip(corpus, sources)
         ]
@@ -86,7 +86,7 @@ class RagBm25:
 
         self.bm25.save(
             str(self.save_directory),
-            corpus=saved_corpus,
+            corpus=saved_corpus
         )
 
         return len(corpus)
@@ -101,7 +101,7 @@ class RagBm25:
 
         self.bm25 = bm25s.BM25.load(
             str(self.save_directory),
-            load_corpus=True,
+            load_corpus=True
         )
 
         if self.bm25.corpus is None or len(self.bm25.corpus) == 0:
@@ -111,7 +111,7 @@ class RagBm25:
 
         return self.bm25
 
-    def retrieve_hits(self, user_question: str, k: int = 5,) -> List[Dict]:
+    def retrieve_hits(self, user_question: str, k: int = 5) -> List[Dict]:
         """Retrieve chunk text, source metadata and scores."""
 
         if not isinstance(user_question, str):
@@ -137,7 +137,7 @@ class RagBm25:
             query_tokens,
             k=actual_k,
             sorted=True,
-            show_progress=False,
+            show_progress=False
         )
 
         # print(zip(documents[0], scores[0]))
@@ -185,7 +185,7 @@ class RagBm25:
 
         return hits
 
-    def retrieve(self, user_question: str, k: int = 5,) -> List[MinimalSource]:
+    def retrieve(self, user_question: str, k: int = 5) -> List[MinimalSource]:
         """Return the relevant source locations."""
 
         return [
@@ -198,7 +198,7 @@ class RagBm25:
         self,
         dataset_path: str,
         save_directory: str = "data/output/search_results",
-        k: int = 5,
+        k: int = 5
     ) -> Path:
         """Search every question and save the results for evaluation."""
 
