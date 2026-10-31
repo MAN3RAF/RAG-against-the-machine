@@ -3,7 +3,7 @@ import json
 from math import isfinite
 from pathlib import Path
 import bm25s
-from models import MinimalSource
+from .models import MinimalSource
 from typing import List, Dict
 
 
@@ -128,7 +128,7 @@ class RagBm25:
 
         query_tokens = bm25s.tokenize(
             [user_question],
-            stopwords=None,
+            stopwords=None
         )
 
         actual_k = min(k, len(self.bm25.corpus))
@@ -167,7 +167,7 @@ class RagBm25:
             key = (
                 source.file_path,
                 source.first_character_index,
-                source.last_character_index,
+                source.last_character_index
             )
 
             if key in seen_sources:
@@ -178,7 +178,7 @@ class RagBm25:
             hits.append({
                 "text": text,
                 "source": source,
-                "score": score,
+                "score": score
             })
         
         # print(hit["source"] for hit in hits)
@@ -198,8 +198,7 @@ class RagBm25:
         self,
         dataset_path: str,
         save_directory: str = "data/output/search_results",
-        k: int = 5
-    ) -> Path:
+        k: int = 5) -> Path:
         """Search every question and save the results for evaluation."""
 
         if type(k) is not int or k < 1:
@@ -235,7 +234,7 @@ class RagBm25:
                         "file_path": "data/raw/" + source.file_path,
                     }
                     for source in sources
-                ],
+                ]
             })
 
         output_dir = Path(save_directory)
@@ -245,7 +244,7 @@ class RagBm25:
 
         output_data = {
             "search_results": results,
-            "k": k,
+            "k": k
         }
 
         with output_file.open("w", encoding="utf-8") as f:

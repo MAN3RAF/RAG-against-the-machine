@@ -13,20 +13,6 @@ class Parser:
         if not self.repo_root.is_dir():
             raise NotADirectoryError(f"Not a repository directory: {self.repo_root}")
 
-        self.commands = {
-            "index": {
-                "positional": [],
-                "options": {
-                    "max_chunk_size": int,
-                },
-            },
-            "search": {
-                "positional": ["query"],
-                "options": {
-                    "k": int,
-                },
-            },
-        }
 
     def get_all_paths(self) -> List[str]:
         """Return sorted absolute paths of eligible files under repo_root."""
@@ -72,73 +58,4 @@ class Parser:
         with path.open("r", encoding="utf-8", newline="") as file:
             original_text = file.read()
         return source_path, original_text
-
-
-    def parse_input(
-        self, argv: List[str]
-    ) -> tuple[str, dict[str, str | int]]:
-
-        if not argv:
-            raise ValueError("No command provided.")
-
-        command = argv[0]
-
-        if command not in self.commands:
-            raise ValueError(f"Unknown command: {command}")
-
-        config = self.commands[command]
-        inputs = {}
-        positional = []
-        arguments = argv[1:]
-
-        i = 0
-
-        while i < len(arguments):
-            argument = arguments[i]
-
-            if argument.startswith("--"):
-                name = argument[2:].replace("-", "_")
-
-                if name not in config["options"]:
-                    raise ValueError(f"Unknown option: {argument}")
-
-                if name in inputs:
-                    raise ValueError(f"Duplicate option: {argument}")
-
-                if i + 1 >= len(arguments):
-                    raise ValueError(f"Missing value for {argument}")
-
-                value = arguments[i + 1]
-
-                if value.startswith("--"):
-                    raise ValueError(f"Missing value for {argument}")
-
-                expected_type = config["options"][name]
-
-                try:
-                    inputs[name] = expected_type(value)
-                except ValueError as exc:
-                    raise ValueError(
-                        f"Invalid value for {argument}: {value}"
-                    ) from exc
-
-                i += 2
-
-            else:
-                positional.append(argument)
-                i += 1
-
-        names = config["positional"]
-
-        if len(positional) != len(names):
-            raise ValueError(
-                f"{command} expects {len(names)} positional arguments, "
-                f"received {len(positional)}."
-            )
-
-        for name, value in zip(names, positional):
-            inputs[name] = value
-
-        return command, inputs
-
 

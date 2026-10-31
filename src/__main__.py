@@ -1,16 +1,17 @@
-from src.parser import Parser
-from sys import argv
+import sys
+import fire
+from .cli import Cli
 
 
-def main():
+def main() -> int:
+    try:
+        fire.Fire(Cli)
 
-    input = argv[1:]
-    print(input[0])
-
+    except (ValueError, TypeError, OSError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+    except KeyboardInterrupt as e:
+        print(e)
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(e)
+    raise SystemExit(main())

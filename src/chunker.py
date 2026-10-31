@@ -4,7 +4,7 @@ from typing import List
 from langchain_core.documents import Document
 from langchain_text_splitters import Language, RecursiveCharacterTextSplitter
 from tqdm import tqdm
-from models import MinimalSource
+from .models import MinimalSource
 
 
 class Chunker:

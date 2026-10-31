@@ -2,33 +2,33 @@
 from parser import Parser
 from chunker import Chunker
 from ragbm25 import RagBm25
-from ragbm25 import RagBm25
+from cli import Cli
 import bm25s
 from sys import argv
 
 
-repo_root = "/home/lsebar/work/RAG-against-the-machine/vllm-0.10.1"
+repo_root = "vllm-0.10.1"
 
 parser = Parser(repo_root)
-key, input = parser.parse_input(argv[1:])
+command, input = parser.parse_input(argv[1:])
+cli = Cli(command, input)
+# paths = parser.get_all_paths()
+# save_directory = "data/processed"
 
-paths = parser.get_all_paths()
-save_directory = "data/processed"
+# print(f"Found {len(paths)} files")
 
-print(f"Found {len(paths)} files")
+# chunker = Chunker(max_chunk_size=2000)
+# chunker.chunk(
+#     paths=paths,
+#     save_directory=save_directory
+# )
 
-chunker = Chunker(max_chunk_size=2000)
-chunker.chunk(
-    paths=paths,
-    save_directory=save_directory
-)
-
-rag = RagBm25(f"{save_directory}/chunked_data.json")
+# rag = RagBm25(f"{save_directory}/chunked_data.json")
 # print(indexer.load_chunks())
 
 # indexer = Indexer(f"{save_directory}/chunked_data.json")
 
-rag.index()
+# rag.index()
 
 # hits = rag.retrieve_hits("What is Cmake?")
 
